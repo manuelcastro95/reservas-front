@@ -11,7 +11,8 @@ const Reservas = () => {
     const [paisOrigen, setPaisOrigen] = useState(null);
     const [paisDestino, setPaisDestino] = useState(null);
     const [reservas, setReservas] = useState([]);
-    const url_base = `http://localhost:4000/v1/api-reservas/`;
+    // const url_base = `http://localhost:4000/v1/api-reservas/`;
+    const url_base = `https://reservas-back-flame.vercel.app/v1/api-reservas/`;
 
     const cargarReservas = async () => {
         let data = await fetch(`${url_base}get-reservas`)

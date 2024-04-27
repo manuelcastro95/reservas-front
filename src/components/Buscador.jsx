@@ -5,7 +5,8 @@ import Input from "./Input";
 const Buscador = ({ onSelect, placeholder }) => {
     const [inputValue, setInputValue] = useState('');
     const [paisesFiltrados, setPaisesFiltrados] = useState([]);
-    let url_base = `http://localhost:4000/v1/api-reservas/`;
+    // let url_base = `http://localhost:4000/v1/api-reservas/`;
+    let url_base = `https://reservas-back-flame.vercel.app/v1/api-reservas/`;
 
     const handleInputChange = async (event) => {
         const input = event.target.value;
