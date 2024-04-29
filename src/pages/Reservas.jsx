@@ -7,6 +7,7 @@ import fondo from '../assets/reservas.png';
 import Swal from 'sweetalert2'
 
 const Reservas = () => {
+    const [key, setKey] = useState(0); 
     const [fecha, setFecha] = useState('');
     const [paisOrigen, setPaisOrigen] = useState(null);
     const [paisDestino, setPaisDestino] = useState(null);
@@ -25,6 +26,26 @@ const Reservas = () => {
     const registrarReserva = async (e) => {
         e.preventDefault();
 
+        if(paisOrigen == null ){
+            Swal.fire({
+                title: '',
+                text: `Debe seleccionar un pais Origen`,
+                icon: 'warning',
+                confirmButtonText: 'Cerrar'
+            })
+            return null;
+        }
+        if(paisDestino == null ){
+            Swal.fire({
+                title: '',
+                text: `Debe seleccionar un pais Origen`,
+                icon: 'warning',
+                confirmButtonText: 'Cerrar'
+            })
+            return null;
+        }
+
+    
         let datos = {
             pais_origen_id: paisOrigen._id,
             pais_destino_id: paisDestino._id,
@@ -48,11 +69,13 @@ const Reservas = () => {
                 })
             })
             .then((response) => {
-                cargarReservas();
-                if(response.icon == 'success'){
-                    setFecha('')
-                    setPaisOrigen(null)
-                    setPaisDestino(null)
+                
+                if(response.icon === 'success'){
+                    setFecha(''); 
+                    setPaisOrigen(null);
+                    setPaisDestino(null);
+                    setKey(prevKey => prevKey + 1);
+                    cargarReservas();
                 }
                 Swal.fire({
                     title: '',
@@ -64,12 +87,21 @@ const Reservas = () => {
     }
 
     const formatear_fecha = (fecha) => {
+        // Crear una fecha en UTC
         let f_format = new Date(fecha);
-        let dia = f_format.getDay() < 9 ? `0${f_format.getDay()}` : f_format.getDay();
-        let mes = f_format.getMonth() < 9 ? `0${f_format.getMonth()}` : f_format.getMonth();
-        return `${dia}-${mes}-${f_format.getFullYear()}`;
+        f_format = new Date(f_format.getTime() + f_format.getTimezoneOffset() * 60000);
+    
+        let dia = f_format.getUTCDate();
+        dia = dia < 10 ? `0${dia}` : dia;
+    
+        let mes = f_format.getUTCMonth() + 1;
+        mes = mes < 10 ? `0${mes}` : mes;
+    
+        let anio = f_format.getUTCFullYear();
+    
+        return `${dia}-${mes}-${anio}`;
     }
-
+    
     useEffect(() => {
         cargarReservas();
     }, [])
@@ -102,6 +134,7 @@ const Reservas = () => {
                     <div>
                         <Label htmlFor="fecha" className="text-dark-charcoal">Fecha</Label>
                         <Input
+                            key={key}
                             type="date"
                             id="fecha"
                             name="fecha"
@@ -124,7 +157,7 @@ const Reservas = () => {
                 </div>
 
                 <div className='mt-6'>
-                    <div className="w-full relative overflow-y-auto h-[400px]">
+                    <div className="w-full relative overflow-y-auto h-[300px]">
                         <table className="table w-full">
                             <thead className="text-background-light bg-dusty-red rounded-xl">
                                 <tr>
