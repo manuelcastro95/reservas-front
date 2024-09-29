@@ -19,7 +19,7 @@ const Reservas = () => {
         let data = await fetch(`${url_base}get-reservas`)
             .then(res => res.json())
             .then(data => data)
-        setReservas(data)
+        setReservas(data.reverse())
     }
 
 
@@ -168,6 +168,7 @@ const Reservas = () => {
                             </thead>
                             <tbody className="text-dark-charcoal">
                                 {reservas.map((reserva, i) =>
+
                                     <tr key={i}>
                                         <td className="border-b p-2">{reserva.pais_origen.name}</td>
                                         <td className="border-b p-2">{reserva.pais_destino.name}</td>
